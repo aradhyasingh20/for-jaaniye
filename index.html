@@ -1,0 +1,520 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="theme-color" content="#fff0f6">
+<title>Operation: I'm Sorry 💌</title>
+
+<style>
+:root {
+  --rose: #f36d9b;
+  --rose-deep: #c94278;
+  --blush: #fff0f6;
+  --ink: #66364f;
+  --muted: #93677e;
+  --line: #f7c9dc;
+}
+
+* { box-sizing: border-box; }
+
+body {
+  margin: 0;
+  min-height: 100vh;
+  padding: 20px 14px;
+  display: grid;
+  place-items: center;
+  color: var(--ink);
+  font-family: "Trebuchet MS", system-ui, sans-serif;
+  background:
+    radial-gradient(circle at 8% 18%, #ffffffc9 0 3px, transparent 4px),
+    radial-gradient(circle at 88% 24%, #ffffffd9 0 4px, transparent 5px),
+    linear-gradient(145deg, #ffe5ef, #fff1f7 46%, #f0eaff);
+  background-size: 72px 72px, 96px 96px, auto;
+}
+
+button {
+  font: inherit;
+  cursor: pointer;
+}
+
+.shell { width: min(100%, 640px); }
+
+.header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 10px;
+  margin: 0 4px 12px;
+}
+
+.brand {
+  font-size: .78rem;
+  font-weight: 900;
+  letter-spacing: .12em;
+  text-transform: uppercase;
+  color: var(--rose-deep);
+}
+
+.pill {
+  padding: 8px 12px;
+  border: 1px solid var(--line);
+  border-radius: 99px;
+  background: #ffffffbd;
+  font-size: .78rem;
+  font-weight: 800;
+  white-space: nowrap;
+}
+
+.track {
+  display: flex;
+  gap: 7px;
+  margin: 0 4px 14px;
+}
+
+.track span {
+  height: 7px;
+  flex: 1;
+  border-radius: 20px;
+  background: #ffffffa8;
+  border: 1px solid #f6cddd;
+  transition: all .25s;
+}
+
+.track span.active {
+  background: linear-gradient(90deg, #ff9bbd, var(--rose));
+  border-color: var(--rose);
+}
+
+.panel {
+  position: relative;
+  overflow: hidden;
+  padding: clamp(23px, 5vw, 42px);
+  border-radius: 30px;
+  border: 1px solid white;
+  background: #fffafdf0;
+  box-shadow: 0 22px 65px #b65d8b26;
+  text-align: center;
+}
+
+.panel:before {
+  content: "";
+  position: absolute;
+  top: -48px;
+  right: -38px;
+  width: 130px;
+  height: 130px;
+  border-radius: 50%;
+  background: #ffe1ed80;
+  pointer-events: none;
+}
+
+.panel:after {
+  content: "";
+  position: absolute;
+  bottom: -65px;
+  left: -40px;
+  width: 145px;
+  height: 145px;
+  border-radius: 50%;
+  background: #eee3ff70;
+  pointer-events: none;
+}
+
+.content {
+  position: relative;
+  z-index: 1;
+}
+
+.emoji {
+  font-size: 3.2rem;
+  line-height: 1.25;
+  margin: 2px 0 12px;
+}
+
+.kicker {
+  font-size: .72rem;
+  font-weight: 900;
+  text-transform: uppercase;
+  letter-spacing: .15em;
+  color: var(--rose-deep);
+}
+
+h1 {
+  font-size: clamp(1.65rem, 6vw, 2.35rem);
+  line-height: 1.15;
+  margin: 10px 0 12px;
+  letter-spacing: -.035em;
+}
+
+p {
+  color: var(--muted);
+  line-height: 1.65;
+  margin: 10px 0;
+}
+
+.question {
+  margin: 22px 0 14px;
+  font-weight: 850;
+  font-size: 1.08rem;
+}
+
+.choices {
+  display: grid;
+  gap: 10px;
+  margin-top: 18px;
+}
+
+.choice, .secondary, .primary {
+  width: 100%;
+  border-radius: 16px;
+  padding: 14px 16px;
+  font-weight: 800;
+  line-height: 1.45;
+  transition: transform .12s, box-shadow .12s;
+}
+
+.choice, .secondary {
+  color: var(--ink);
+  background: white;
+  border: 1px solid #f6d5e2;
+  box-shadow: 0 4px 0 #f1d5e2;
+}
+
+.primary {
+  color: white;
+  border: 1px solid #ef76a2;
+  background: linear-gradient(135deg, #ff91b6, #e95591);
+  box-shadow: 0 4px 0 #ca477e;
+}
+
+.choice:hover, .secondary:hover, .primary:hover {
+  transform: translateY(-1px);
+}
+
+.choice:active, .secondary:active, .primary:active {
+  transform: translateY(2px);
+  box-shadow: 0 2px 0 #efcede;
+}
+
+button:focus-visible {
+  outline: 3px solid #a36be2;
+  outline-offset: 3px;
+}
+
+.notice {
+  margin-top: 16px;
+  padding: 13px 15px;
+  border-radius: 16px;
+  background: #fff0f6;
+  border: 1px solid #f8d4e2;
+  color: #9b3e6c;
+  line-height: 1.55;
+  font-weight: 750;
+  text-align: left;
+}
+
+.notice[hidden] { display: none; }
+
+.heart-grid {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 10px;
+  margin: 22px 0 8px;
+}
+
+.heart {
+  min-height: 112px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 7px;
+  font-size: 2rem;
+  padding: 9px 4px;
+}
+
+.heart small {
+  font-size: .72rem;
+  color: #ad5b82;
+}
+
+.heart.opened {
+  background: #ffe5ef;
+  border-color: #f4a9c7;
+}
+
+.letter {
+  padding: 20px;
+  text-align: left;
+  white-space: pre-wrap;
+  overflow-wrap: anywhere;
+  border-radius: 20px;
+  background: linear-gradient(145deg, #fff0f6, #fff8fc);
+  border: 1px dashed #ee9fbe;
+  line-height: 1.9;
+  font-size: 1.02rem;
+  color: #773a59;
+}
+
+.small { font-size: .82rem; }
+
+.footer {
+  text-align: center;
+  color: #b77998;
+  font-size: .75rem;
+  margin: 14px 8px 0;
+}
+
+.sparkle { color: #e95d96; }
+
+@media (max-width: 390px) {
+  .header { align-items: flex-start; }
+  .brand { max-width: 180px; line-height: 1.5; }
+  .heart-grid { gap: 6px; }
+  .heart { min-height: 100px; }
+}
+</style>
+</head>
+
+<body>
+<main class="shell">
+
+  <header class="header">
+    <div class="brand">💌 Operation: I'm Sorry</div>
+    <div class="pill" id="levelLabel">LEVEL 1 / 5</div>
+  </header>
+
+  <div class="track" aria-label="Progress through five levels">
+    <span class="active"></span>
+    <span></span>
+    <span></span>
+    <span></span>
+    <span></span>
+  </div>
+
+  <section class="panel">
+    <div class="content" id="game" aria-live="polite"></div>
+  </section>
+
+  <div class="footer">
+    a tiny game made with a whole lot of love
+    <span class="sparkle">♡</span>
+  </div>
+
+</main>
+
+<script>
+const apology =
+"Always heree to make youu happyyyy, although this is bare minimum cause youu deserve moreeee merii bachhii, MWUAAHHHH LOVEEEE YOUUU FOREVERRRR 🧿";
+
+let level = 1;
+const opened = new Set();
+
+const game = document.getElementById("game");
+const label = document.getElementById("levelLabel");
+const bars = [...document.querySelectorAll(".track span")];
+
+function progress() {
+  label.textContent = `LEVEL ${level} / 5`;
+  bars.forEach((bar, i) => {
+    bar.classList.toggle("active", i < level);
+  });
+}
+
+function notice(message) {
+  const box = document.getElementById("notice");
+  if (box) {
+    box.hidden = false;
+    box.textContent = message;
+  }
+}
+
+function next() {
+  level = Math.min(5, level + 1);
+  render();
+}
+
+function addNext(text) {
+  const button = document.createElement("button");
+  button.className = "primary";
+  button.textContent = text;
+  button.style.marginTop = "12px";
+  button.onclick = next;
+  game.querySelector(".choices").after(button);
+}
+
+function render() {
+  progress();
+
+  if (level === 1) {
+    game.innerHTML = `
+      <div class="emoji">🕵🏻‍♀️💗</div>
+      <div class="kicker">Level 1 · The little mystery</div>
+      <h1>One tiny mystery...</h1>
+      <p>Someone deserves a little extra appreciation today. Can you guess who?</p>
+      <div class="question">Who deserves more appreciation?</div>
+      <div class="choices">
+        <button class="choice" id="wrong">A random person 🤷</button>
+        <button class="primary" id="right">The girl reading this 💗</button>
+      </div>
+      <div class="notice" id="notice" hidden></div>`;
+
+    document.getElementById("wrong").onclick = () =>
+      notice("Nopeee, try again, silly 😭💕 You know this one!");
+
+    document.getElementById("right").onclick = () => {
+      notice("Obviously you, silly. But I know saying it isn't enough; I need to show you, too. 💗");
+      const button = document.getElementById("right");
+      button.textContent = "Okay, next level 💞";
+      button.onclick = next;
+    };
+
+  } else if (level === 2) {
+    game.innerHTML = `
+      <div class="emoji">💗💗💗</div>
+      <div class="kicker">Level 2 · Three little truths</div>
+      <h1>Tap all three hearts</h1>
+      <p>Each heart has something I want you to know. Open all three to continue, jaaaniyeee. 🥹</p>
+      <div class="heart-grid">
+        <button class="choice heart" data-heart="0">💖<small>Truth #1</small></button>
+        <button class="choice heart" data-heart="1">💗<small>Truth #2</small></button>
+        <button class="choice heart" data-heart="2">💕<small>Truth #3</small></button>
+      </div>
+      <div class="notice" id="notice" hidden></div>
+      <div class="choices">
+        <button class="primary" id="next" disabled style="opacity:.5">Open all hearts first 💌</button>
+      </div>`;
+
+    const truths = [
+      "I appreciate all the little efforts you make, even the ones you think I don't notice. 💐",
+      "I love how caring you are. You make the people you love feel special. 🧸",
+      "You bring so much happiness into my life just by being you. 🌷"
+    ];
+
+    document.querySelectorAll("[data-heart]").forEach(button => {
+      button.onclick = () => {
+        const i = Number(button.dataset.heart);
+        if (opened.has(i)) return;
+
+        opened.add(i);
+        button.classList.add("opened");
+        button.innerHTML = "💝<small>Opened!</small>";
+
+        const box = document.getElementById("notice");
+        box.hidden = false;
+        box.innerHTML = [...opened].sort().map(index =>
+          `<div style="margin:7px 0">${truths[index]}</div>`
+        ).join("");
+
+        if (opened.size === 3) {
+          const nextButton = document.getElementById("next");
+          nextButton.disabled = false;
+          nextButton.style.opacity = "1";
+          nextButton.textContent = "All hearts opened — next level 💗";
+          nextButton.onclick = next;
+        }
+      };
+    });
+
+  } else if (level === 3) {
+    game.innerHTML = `
+      <div class="emoji">🥥🍬</div>
+      <div class="kicker">Level 3 · Case file: Shubham</div>
+      <h1>Why is Shubham always busy?</h1>
+      <p>Choose carefully. The nariyal ki barfi investigation is very serious business. 🕵🏻</p>
+      <div class="choices">
+        <button class="choice" data-choice="A">A. He acts like he is busy but he is not</button>
+        <button class="choice" data-choice="B">B. He is busy in making efforts for his nariyal ki barfi 🥥</button>
+        <button class="choice" data-choice="C">C. He has very hectic schedule</button>
+      </div>
+      <div class="notice" id="notice" hidden></div>`;
+
+    document.querySelectorAll("[data-choice]").forEach(button => {
+      button.onclick = () => {
+        if (button.dataset.choice !== "B") {
+          notice("Wrong answer, jaaaniyeee 😭 Think about the nariyal ki barfi and try again! 🥥");
+          return;
+        }
+
+        notice("CORRECTTT! 🥹🥥💗 He's busy making efforts for his nariyal ki barfi!");
+        document.querySelectorAll("[data-choice]").forEach(b => b.disabled = true);
+        addNext("Next level 💞");
+      };
+    });
+
+  } else if (level === 4) {
+    game.innerHTML = `
+      <div class="emoji">🥹❤️</div>
+      <div class="kicker">Level 4 · The Aakriti question</div>
+      <h1>Why is Shubham obsessed with Aakriti?</h1>
+      <p>Think carefully... or don't. Somehow, every answer is right. 😌💗</p>
+      <div class="choices">
+        <button class="choice" data-choice="A">A. Cause he love herr the most</button>
+        <button class="choice" data-choice="B">B. Option A</button>
+        <button class="choice" data-choice="C">C. Both Option A and B</button>
+        <button class="choice" data-choice="D">D. All of the above</button>
+      </div>
+      <div class="notice" id="notice" hidden></div>`;
+
+    document.querySelectorAll("[data-choice]").forEach(button => {
+      button.onclick = () => {
+        notice("EVERY OPTION IS CORRECTTT 😭❤️ Because Shubham loves Aakriti the mostest, obviouslyyy!");
+        document.querySelectorAll("[data-choice]").forEach(b => b.disabled = true);
+        addNext("Open my final message 💌");
+      };
+    });
+
+  } else {
+    game.innerHTML = `
+      <div class="emoji">💌🧿💗</div>
+      <div class="kicker">Level 5 · Just for you</div>
+      <h1>For my jaaaniyeee 🥹</h1>
+      <p>One little message, just to remind you how much you mean to me.</p>
+      <div class="letter" id="letter"></div>
+      <div class="choices">
+        <button class="primary" id="copy">Copy my message 💌</button>
+        <button class="secondary" id="again">Play again ↻</button>
+      </div>
+      <div class="notice" id="notice" hidden></div>
+      <p class="small">You deserve to feel loved, valued, and important — not just hear it. 💗</p>`;
+
+    document.getElementById("letter").textContent = apology;
+
+    document.getElementById("copy").onclick = async () => {
+      try {
+        if (navigator.clipboard && window.isSecureContext) {
+          await navigator.clipboard.writeText(apology);
+        } else {
+          const area = document.createElement("textarea");
+          area.value = apology;
+          area.style.position = "fixed";
+          area.style.opacity = "0";
+          document.body.appendChild(area);
+          area.select();
+          const success = document.execCommand("copy");
+          area.remove();
+          if (!success) throw new Error("Copy failed");
+        }
+
+        notice("Copiedddd! 💗 Now send your jaaaniyeee all the love.");
+      } catch (error) {
+        notice("Your browser couldn't copy automatically. Press and hold the message above, then choose Copy. 💌");
+      }
+    };
+
+    document.getElementById("again").onclick = () => {
+      level = 1;
+      opened.clear();
+      render();
+    };
+  }
+
+  progress();
+}
+
+render();
+</script>
+</body>
+</html>
